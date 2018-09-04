@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin>
-<name>Notes</name>
+<name>DuokanNote</name>
 <type>edit</type>
-<author>萌</author>
-<description>Notes</description>
+<author>laggardkernel</author>
+<description>Generate duokan compatible notes</description>
 <engine>python2.7</engine>
 <engine>python3.4</engine>
 <version>1.0.0</version>
