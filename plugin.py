@@ -10,7 +10,7 @@ def run(bk):
     note_text_id = 0
 # all xhtml/html files - moves found notes to end of file, insert a link
 # in the text and link to css in the files with notes
-    for (id, href) in bk.text_iter():
+    for (id, linear, href) in bk.spine_iter():
         html = bk.readfile(id)
         html_original = html
 
@@ -69,8 +69,8 @@ aside {
 }
 
 ol.duokan-footnote-content {
-  padding-left: 2em;
-  -webkit-padding-start: 2em;
+  padding-left: 1em;
+  -webkit-padding-start: 1em;
   list-style-type: none;
   /* list-style-position: outside; */
 }
