@@ -6,16 +6,18 @@ import re
 
 
 def run(bk):
+    # all xhtml/html files - moves found notes to end of file, insert a link
+    # in the text and link to css in the files with notes
     note_ref_id = 0
     note_text_id = 0
-# all xhtml/html files - moves found notes to end of file, insert a link
-# in the text and link to css in the files with notes
+
+    pattern_ref = re.compile(r'(?<!<p>)\[\d+\]')
+    pattern_text = re.compile(r'\<p\>\[\d+\](.+)\<\/p\>')
+
     for (id, linear, href) in bk.spine_iter():
         html = bk.readfile(id)
         html_original = html
 
-        pattern_ref = re.compile(r'(?<!<p>)\[\d+\]')
-        pattern_text = re.compile(r'\<p\>\[\d+\](.+)\<\/p\>')
         note_ref = re.search(pattern_ref, html)
         note_text = re.search(pattern_text, html)
 
@@ -29,16 +31,14 @@ def run(bk):
 
             while note_ref is not None:
                 note_ref_id = note_ref_id + 1
-                html = re.sub(pattern_ref, r'<a class="duokan-footnote" epub:type="noteref" href="' + str(
-                    id) + '#fn' + str(note_ref_id) + '" id="fnref' + str(note_ref_id) + '"><img alt="" src="../Images/note.png"/></a>', html, 1)
+                html = re.sub(pattern_ref, r'<a class="duokan-footnote" epub:type="noteref" href="#fntext' + str(note_ref_id) + '" id="fnref' + str(note_ref_id) + '"><img alt="◎" src="../Images/note.png"/></a>', html, 1)
                 print(id, href, '' + str(note_ref_id) + ':' + note_ref.group(0).strip('[]^'))
                 note_ref = re.search(pattern_ref, html)
 
             while note_text is not None:
                 note_text_id = note_text_id + 1
                 html = re.sub(pattern_text, r'', html, 1)
-                html = re.sub(r'\<\/ol\>', r'\n<li class="duokan-footnote-item" id="fn' + str(note_text_id) + '">\n<p class="fn"><a href="' +
-                              str(id) + '#fnref' + str(note_text_id) + '">◎</a>' + note_text.group(1).strip('[]^') + '​​​​​​​​</p></li>\n</ol>', html, 1)
+                html = re.sub(r'\<\/ol\>', r'\n<li class="duokan-footnote-item" id="fntext' + str(note_text_id) + '">\n<p class="fntext"><a href="#fnref' + str(note_text_id) + '">◎</a>' + note_text.group(1).strip('[]^') + '​​​​​​​​</p></li>\n</ol>', html, 1)
                 print(id, href, '' + str(note_text_id) + ':' + note_text.group(1))
                 note_text = re.search(pattern_text, html)
             else:
@@ -81,7 +81,7 @@ li.duokan-footnote-item {
   text-decoration: none;
 }
 
-p.fn {
+p.fntext {
   text-decoration: none;
   color: #000000;
   font-family: Garamond, Palatino, "kt", "楷体", serif;
@@ -90,7 +90,7 @@ p.fn {
   text-align: left;
 }
 
-p.fn a {
+p.fntext a {
   color: #000000;
   text-decoration: none;
   margin-left: -1em;
