@@ -14,8 +14,10 @@ def run(bk):
         html = bk.readfile(id)
         html_original = html
 
-        note_ref = re.search(r'(?<!<p>)\[\d+\]', html)
-        note_text = re.search(r'\<p\>\[\d+\](.+)\<\/p\>', html)
+        pattern_ref = re.compile(r'(?<!<p>)\[\d+\]')
+        pattern_text = re.compile(r'\<p\>\[\d+\](.+)\<\/p\>')
+        note_ref = re.search(pattern_ref, html)
+        note_text = re.search(pattern_text, html)
 
         if note_ref is not None:  # only once for each file with notes
             html = re.sub(
@@ -27,18 +29,18 @@ def run(bk):
 
             while note_ref is not None:
                 note_ref_id = note_ref_id + 1
-                html = re.sub(r'(?<!<p>)\[\d+\]', r'<a class="duokan-footnote" epub:type="noteref" href="' + str(
+                html = re.sub(pattern_ref, r'<a class="duokan-footnote" epub:type="noteref" href="' + str(
                     id) + '#fn' + str(note_ref_id) + '" id="fnref' + str(note_ref_id) + '"><img alt="" src="../Images/note.png"/></a>', html, 1)
                 print(id, href, '' + str(note_ref_id) + ':' + note_ref.group(0).strip('[]^'))
-                note_ref = re.search(r'(?<!<p>)\[\d+\]', html)
+                note_ref = re.search(pattern_ref, html)
 
             while note_text is not None:
                 note_text_id = note_text_id + 1
-                html = re.sub(r'\<p\>\[\d+\](.+)\<\/p\>', r'', html, 1)
+                html = re.sub(pattern_text, r'', html, 1)
                 html = re.sub(r'\<\/ol\>', r'\n<li class="duokan-footnote-item" id="fn' + str(note_text_id) + '">\n<p class="fn"><a href="' +
                               str(id) + '#fnref' + str(note_text_id) + '">◎</a>' + note_text.group(1).strip('[]^') + '​​​​​​​​</p></li>\n</ol>', html, 1)
                 print(id, href, '' + str(note_text_id) + ':' + note_text.group(1))
-                note_text = re.search(r'\<p\>\[\d+\](.+)\<\/p\>', html)
+                note_text = re.search(pattern_text, html)
             else:
                 print(id, href, "No notes found")
 
