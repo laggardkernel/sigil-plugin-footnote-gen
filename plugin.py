@@ -38,7 +38,7 @@ def run(bk):
             while note_text is not None:
                 note_text_id = note_text_id + 1
                 html = re.sub(pattern_text, r'', html, 1)
-                html = re.sub(r'\<\/ol\>', r'\n<li class="duokan-footnote-item" id="fntext' + str(note_text_id) + '">\n<p class="fntext"><a href="#fnref' + str(note_text_id) + '">◎</a>' + note_text.group(1).strip('[]^') + '​​​​​​​​</p></li>\n</ol>', html, 1)
+                html = re.sub(r'\<\/ol\>', r'\n<li class="duokan-footnote-item" id="fntext' + str(note_text_id) + '">\n<a href="#fnref' + str(note_text_id) + '">◎</a>' + note_text.group(1).strip('[]^') + '​​​​​​​​</li>\n</ol>', html, 1)
                 print(id, href, '' + str(note_text_id) + ':' + note_text.group(1))
                 note_text = re.search(pattern_text, html)
             else:
@@ -79,18 +79,15 @@ ol.duokan-footnote-content {
 
 li.duokan-footnote-item {
   text-decoration: none;
-}
-
-p.fntext {
-  text-decoration: none;
   color: #000000;
   font-family: Garamond, Palatino, "kt", "楷体", serif;
+  font-size: 0.9em;
   text-indent: 0;
   duokan-text-indent: 0em;
   text-align: left;
 }
 
-p.fntext a {
+li.duokan-footnote-item a {
   color: #000000;
   text-decoration: none;
   margin-left: -1em;
