@@ -31,14 +31,14 @@ def run(bk):
 
             while note_ref is not None:
                 note_ref_id = note_ref_id + 1
-                html = re.sub(pattern_ref, r'<a class="duokan-footnote" epub:type="noteref" href="#fntext' + str(note_ref_id) + '" id="fnref' + str(note_ref_id) + '"><img alt="◎" src="../Images/note.png"/></a>', html, 1)
+                html = re.sub(pattern_ref, r'<a style="text-decoration:none!important;color:black;" class="duokan-footnote" epub:type="noteref" href="#fntext-' + str(note_ref_id) + '" id="fnref-' + str(note_ref_id) + '"><img alt="㊟" src="../Images/note.png"/></a>', html, 1)
                 print(id, href, '' + str(note_ref_id) + ':' + note_ref.group(0).strip('[]^'))
                 note_ref = re.search(pattern_ref, html)
 
             while note_text is not None:
                 note_text_id = note_text_id + 1
                 html = re.sub(pattern_text, r'', html, 1)
-                html = re.sub(r'\<\/ol\>', r'\n<li class="duokan-footnote-item" id="fntext' + str(note_text_id) + '">\n<a href="#fnref' + str(note_text_id) + '">◎</a>' + note_text.group(1).strip('[]^') + '​​​​​​​​</li>\n</ol>', html, 1)
+                html = re.sub(r'\<\/ol\>', r'\n<li class="duokan-footnote-item" id="fntext-' + str(note_text_id) + '">\n<a style="text-decoration:none!important;color:black;" href="#fnref-' + str(note_text_id) + '">◎</a>' + note_text.group(1).strip('[]^') + '​​​​​​​​</li>\n</ol>', html, 1)
                 print(id, href, '' + str(note_text_id) + ':' + note_text.group(1))
                 note_text = re.search(pattern_text, html)
             else:
@@ -62,17 +62,14 @@ def insert_note_css(bk):
 
 .duokan-footnote img {
   width: 0.8em;
-  vertical-align: super;
-}
-
-aside {
-  border-top: 2px solid #e1e1e1;
-  margin-top: 1.5em;
+  vertical-align: text-top;
 }
 
 ol.duokan-footnote-content {
-  padding-left: 1em;
-  -webkit-padding-start: 1em;
+  border-top: 2px solid #e1e1e1;
+  margin-top: 1.5em;
+  padding-left: 1.5em;
+  -webkit-padding-start: 1.5em;
   list-style-type: none;
   /* list-style-position: outside; */
 }
@@ -90,7 +87,8 @@ li.duokan-footnote-item {
 li.duokan-footnote-item a {
   color: #000000;
   text-decoration: none;
-  margin-left: -1em;
+  margin-left: -1.5em;
+  margin-right: 0.5em;
 }
 '''
     basename = "footnote.css"
