@@ -1,0 +1,44 @@
+@charset utf-8;
+/*
+* Default duokan footnote style from sigil plugin FootnoteGen
+*/
+a.duokan-footnote {
+  line-height: 1;
+  text-decoration: none;
+  height: auto;
+  border: 0;
+  color: #000000;
+}
+
+.duokan-footnote img {
+  width: 0.8em;
+  vertical-align: text-top;
+}
+
+ol.duokan-footnote-content {
+  margin-top: 1.5em;
+  border-top: 2px solid #e1e1e1;
+  padding-top: 0.5em;
+  padding-left: 1.5em;
+  -webkit-padding-start: 1.5em;
+  list-style-type: none;
+  /* list-style-position: outside; */
+}
+
+li.duokan-footnote-item {
+  text-decoration: none;
+  color: #000000;
+  font-family: "kt", "st", "zw", serif;
+  font-size: 0.9em;
+  text-indent: 0;
+  duokan-text-indent: 0em;
+  text-align: left;
+  margin: 0.35em 0;
+}
+
+li.duokan-footnote-item a.fnsymbol {
+  color: #000000;
+  text-decoration: none;
+  margin-left: -1.5em;
+  margin-right: 0.5em;
+}

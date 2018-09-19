@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin>
-<name>DuokanNote</name>
+<name>FootnoteGen</name>
 <type>edit</type>
 <author>laggardkernel</author>
-<description>Generate duokan compatible notes</description>
-<engine>python2.7</engine>
+<description>Generate footnotes of Duokan style</description>
+<autostart>true</autostart>
 <engine>python3.4</engine>
-<version>1.0.0</version>
+<version>0.1.0</version>
 <oslist>osx,unx,win</oslist>
 </plugin>
