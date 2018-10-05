@@ -195,13 +195,13 @@ def run(bk):
         template_anchor = '''<a style="text-decoration:none!important;color:black;" class="duokan-footnote" epub:type="noteref" href="#{fndef_id}{id}" id="{fnanchor_id}{id}"><img alt="" src="../Images/note.png"/></a>'''
         template_def = '''
       <li class="duokan-footnote-item" id="{fndef_id}{id}">
-        <a class="{backlink_class}" style="text-decoration:none!important;color:black;" href="#{fnanchor_id}{id}">◎</a>{text}​​​​​​​​</li>\n</ol>'''
+        <p><a class="{backlink_class}" style="text-decoration:none!important;color:black;" href="#{fnanchor_id}{id}">◎</a>{text}​​​​​​​​</p></li>\n</ol>'''
     else:
         if kindle_compat:
             template_anchor = '''<a style="text-decoration:none!important;color:black;" class="duokan-footnote" href="#{fndef_id}{id}" id="{fnanchor_id}{id}"><img alt="" src="../Images/note.png"/></a>'''
             template_def = '''
           <li class="duokan-footnote-item" id="{fndef_id}{id}">
-            <a class="{backlink_class}" style="text-decoration:none!important;color:black;" href="#{fnanchor_id}{id}">◎</a>{text}​​​​​​​​</li>\n</ol>'''
+            <p><a class="{backlink_class}" style="text-decoration:none!important;color:black;" href="#{fnanchor_id}{id}">◎</a>{text}​​​​​​​​</p></li>\n</ol>'''
         if ibooks_compat:
             template_anchor = '''<a class="duokan-footnote" epub:type="noteref" href="#{fndef_id}{id}" id="{fnanchor_id}{id}"><img alt="" src="../Images/note.png"/></a>'''
             template_def = '''
