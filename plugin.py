@@ -1,5 +1,9 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019, laggardkernel and the sigil-plugin-footnote-gen contributors
+# SPDX-License-Identifier: MIT
+
 from __future__ import unicode_literals, division, absolute_import, print_function
 import os
 import sys
@@ -118,7 +122,9 @@ class Dialog(Frame):
 
         # Notes source location
         self.separate = IntVar()
-        separateSourceCheck = Checkbutton(self, text="Footnote file: ", variable=self.separate)
+        separateSourceCheck = Checkbutton(
+            self, text="Footnote file: ", variable=self.separate
+        )
         separateSourceCheck.place(x=5, y=135)
 
         self.notesource = StringVar()
@@ -146,17 +152,21 @@ def run(bk):
     root.geometry("320x200+400+400")
     app = Dialog(root, bk)
     if not isosx:
-        icon_img = PhotoImage(file=os.path.join(bk._w.plugin_dir, bk._w.plugin_name, 'sigil.png'))
+        icon_img = PhotoImage(
+            file=os.path.join(bk._w.plugin_dir, bk._w.plugin_name, 'sigil.png')
+        )
         root.tk.call('wm', 'iconphoto', root._w, icon_img)
     root.mainloop()
 
     if Cancel == True:
-        print('Plugin terminated by user.\nPlease click OK to close the Plugin Runner window.')
+        print(
+            'Plugin terminated by user.\nPlease click OK to close the Plugin Runner window.'
+        )
         return -1
 
-    #--------------------------------------
+    # --------------------------------------
     # get preferences
-    #--------------------------------------
+    # --------------------------------------
     prefs = bk.getPrefs()
 
     # id prefix for <sup> footnote anchors
@@ -184,29 +194,29 @@ def run(bk):
     else:
         epubversion = BeautifulSoup(bk.get_opf(), 'lxml').find('package')['version']
 
-    #-------------------------
+    # -------------------------
     # footnote linking process
-    #-------------------------
+    # -------------------------
     template_anchor = '''<a class="duokan-footnote" href="#{fndef_id}{id}" id="{fnanchor_id}{id}"><img alt="" src="../Images/note.png"/></a>'''
     template_def = '''
-      <li class="duokan-footnote-item" id="{fndef_id}{id}">
-        <a class="{backlink_class}" href="#{fnanchor_id}{id}">◎</a>{text}​​​​​​​​</li>\n</ol>'''
+	  <li class="duokan-footnote-item" id="{fndef_id}{id}">
+		<a class="{backlink_class}" href="#{fnanchor_id}{id}">◎</a>{text}​​​​​​​​</li>\n</ol>'''
     if kindle_compat and ibooks_compat:
         template_anchor = '''<a style="text-decoration:none!important;color:black;" class="duokan-footnote" epub:type="noteref" href="#{fndef_id}{id}" id="{fnanchor_id}{id}"><img alt="" src="../Images/note.png"/></a>'''
         template_def = '''
-      <li class="duokan-footnote-item" id="{fndef_id}{id}">
-        <p><a class="{backlink_class}" style="text-decoration:none!important;color:black;" href="#{fnanchor_id}{id}">◎</a>{text}​​​​​​​​</p></li>\n</ol>'''
+	  <li class="duokan-footnote-item" id="{fndef_id}{id}">
+		<p><a class="{backlink_class}" style="text-decoration:none!important;color:black;" href="#{fnanchor_id}{id}">◎</a>{text}​​​​​​​​</p></li>\n</ol>'''
     else:
         if kindle_compat:
             template_anchor = '''<a style="text-decoration:none!important;color:black;" class="duokan-footnote" href="#{fndef_id}{id}" id="{fnanchor_id}{id}"><img alt="" src="../Images/note.png"/></a>'''
             template_def = '''
-          <li class="duokan-footnote-item" id="{fndef_id}{id}">
-            <p><a class="{backlink_class}" style="text-decoration:none!important;color:black;" href="#{fnanchor_id}{id}">◎</a>{text}​​​​​​​​</p></li>\n</ol>'''
+		  <li class="duokan-footnote-item" id="{fndef_id}{id}">
+			<p><a class="{backlink_class}" style="text-decoration:none!important;color:black;" href="#{fnanchor_id}{id}">◎</a>{text}​​​​​​​​</p></li>\n</ol>'''
         if ibooks_compat:
             template_anchor = '''<a class="duokan-footnote" epub:type="noteref" href="#{fndef_id}{id}" id="{fnanchor_id}{id}"><img alt="" src="../Images/note.png"/></a>'''
             template_def = '''
-          <li class="duokan-footnote-item" id="{fndef_id}{id}">
-            <a class="{backlink_class}" style="color:black;" href="#{fnanchor_id}{id}">◎</a>{text}​​​​​​​​</li>\n</ol>'''
+		  <li class="duokan-footnote-item" id="{fndef_id}{id}">
+			<a class="{backlink_class}" style="color:black;" href="#{fnanchor_id}{id}">◎</a>{text}​​​​​​​​</li>\n</ol>'''
 
     anchor_count = 0
     def_count = 0
@@ -221,7 +231,11 @@ def run(bk):
             notesource = 'Text/' + notesource
         temp_list = [opf_href for (manifest_id, linear, opf_href) in bk.spine_iter()]
         if notesource in temp_list:
-            iter_list = [(manifest_id, linear, opf_href) for (manifest_id, linear, opf_href) in bk.spine_iter() if opf_href != notesource]
+            iter_list = [
+                (manifest_id, linear, opf_href)
+                for (manifest_id, linear, opf_href) in bk.spine_iter()
+                if opf_href != notesource
+            ]
             note_html = bk.readfile(bk.href_to_id(notesource))
     else:
         iter_list = list(bk.spine_iter())
@@ -234,10 +248,17 @@ def run(bk):
         note_anchor = re.search(pattern_anchor, html)
         if note_anchor is not None:  # only once for each file with notes
             html = re.sub(
-                r'\<\/head\>', r'<link href="../Styles/footnote.css" rel="stylesheet" type="text/css"/>\n</head>', html)
+                r'\<\/head\>',
+                r'<link href="../Styles/footnote.css" rel="stylesheet" type="text/css"/>\n</head>',
+                html,
+            )
 
             if ibooks_compat:
-                html = re.sub(r'\<\/body\>', r'<aside epub:type="footnote">\n<ol class="duokan-footnote-content">\n</ol>\n</aside>\n</body>', html)
+                html = re.sub(
+                    r'\<\/body\>',
+                    r'<aside epub:type="footnote">\n<ol class="duokan-footnote-content">\n</ol>\n</aside>\n</body>',
+                    html,
+                )
                 soup = BeautifulSoup(html, 'html.parser')
                 soup.html['xmlns:epub'] = 'http://www.idpf.org/2007/ops'
                 bk.writefile(manifest_id, str(soup))
@@ -246,15 +267,26 @@ def run(bk):
                 html = bk.readfile(manifest_id)
                 html_original = html
             else:
-                html = re.sub(r'\<\/body\>', r'<ol class="duokan-footnote-content">\n</ol>\n</body>', html)
+                html = re.sub(
+                    r'\<\/body\>',
+                    r'<ol class="duokan-footnote-content">\n</ol>\n</body>',
+                    html,
+                )
 
             local_count = 0
             while note_anchor is not None:
                 anchor_count = anchor_count + 1
                 local_count += 1
-                template = template_anchor.format(id=anchor_count, fnanchor_id=fnanchor_id, fndef_id=fndef_id)
+                template = template_anchor.format(
+                    id=anchor_count, fnanchor_id=fnanchor_id, fndef_id=fndef_id
+                )
                 html = re.sub(pattern_anchor, template, html, 1)
-                print('Anchor No.' + str(anchor_count) + ': ' + note_anchor.group(0).strip('[]^'))
+                print(
+                    'Anchor No.'
+                    + str(anchor_count)
+                    + ': '
+                    + note_anchor.group(0).strip('[]^')
+                )
                 note_anchor = re.search(pattern_anchor, html)
 
             if note_html:
@@ -262,8 +294,13 @@ def run(bk):
                 for i in range(1, local_count + 1):
                     def_count = def_count + 1
                     note_html = re.sub(pattern_def, r'', note_html, 1)
-                    template = template_def.format(id=def_count, text=note_def.group(1).strip('[]^'),
-                        fnanchor_id=fnanchor_id, fndef_id=fndef_id, backlink_class=backlink_class)
+                    template = template_def.format(
+                        id=def_count,
+                        text=note_def.group(1).strip('[]^'),
+                        fnanchor_id=fnanchor_id,
+                        fndef_id=fndef_id,
+                        backlink_class=backlink_class,
+                    )
                     html = re.sub(r'\<\/ol\>', template, html, 1)
                     print('Note No.' + str(def_count) + ': ' + note_def.group(1))
                     note_def = re.search(pattern_def, note_html)
@@ -272,8 +309,13 @@ def run(bk):
                 while note_def is not None:
                     def_count = def_count + 1
                     html = re.sub(pattern_def, r'', html, 1)
-                    template = template_def.format(id=def_count, text=note_def.group(1).strip('[]^'),
-                        fnanchor_id=fnanchor_id, fndef_id=fndef_id, backlink_class=backlink_class)
+                    template = template_def.format(
+                        id=def_count,
+                        text=note_def.group(1).strip('[]^'),
+                        fnanchor_id=fnanchor_id,
+                        fndef_id=fndef_id,
+                        backlink_class=backlink_class,
+                    )
                     html = re.sub(r'\<\/ol\>', template, html, 1)
                     print('Note No.' + str(def_count) + ': ' + note_def.group(1))
                     note_def = re.search(pattern_def, html)
@@ -285,11 +327,15 @@ def run(bk):
 
     if not note_html == note_html_original:
         bk.writefile(bk.href_to_id(notesource), note_html)
-        print('\nInfo: Remember to delete footnote source file %s manually.' % notesource)
+        print(
+            '\nInfo: Remember to delete footnote source file %s manually.' % notesource
+        )
 
     insert_note_css(bk, backlink_class=backlink_class)
 
-    print("\nInfo: Footnote generation succeeded, after which you'd better beautify all text files.")
+    print(
+        "\nInfo: Footnote generation succeeded, after which you'd better beautify all text files."
+    )
     return 0
 
 
