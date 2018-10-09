@@ -3,9 +3,9 @@
 <name>FootnoteGen</name>
 <type>edit</type>
 <author>laggardkernel</author>
-<description>Generate footnotes of Duokan style</description>
+<description>Generate footnotes with Duokan style</description>
 <autostart>true</autostart>
 <engine>python3.4</engine>
-<version>0.1.0</version>
+<version>0.2.0</version>
 <oslist>osx,unx,win</oslist>
 </plugin>
